@@ -17,8 +17,12 @@
       become_method: sudo
     - name: install Flask
       command: pip3 install flask
+    - name: install Gevent
+      command: pip3 install gevent
     - name: start server
-      command: python3 server.py
+      command: sudo python3 server.py
       args:
-        chdir: ~/CSE_356_HW1
+        chdir: /home/ubuntu/CSE_356_HW1
+      become: yes
+      become_method: sudo
 
