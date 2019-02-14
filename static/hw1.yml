@@ -3,7 +3,7 @@
   remote_user: ubuntu
   tasks:
     - name: clone server
-      git: repo=https://github.com/jerchu/CSE_356_HW1.git dest=/home/ubuntu/server update=yes
+      git: repo=https://github.com/jerchu/CSE_356_HW1.git dest=/var/www/server update=yes
     - name: install apache2
       apt: name=apache2 update_cache=yes state=latest
       become: yes
