@@ -2,11 +2,6 @@
 - hosts: all
   remote_user: ubuntu
   tasks:
-    - name: kill old server
-      shell: "test -e ~/CSE_356_HW1/srv_pid.txt && sudo kill $(cat srv_pid.txt)"
-      ignore_errors: True
-      args:
-        chdir: ~/CSE_356_HW1
     - name: delete old directory
       file:
         path: ~/CSE_356_HW1
@@ -15,9 +10,14 @@
       command: git clone https://github.com/jerchu/CSE_356_HW1.git
       args:
         chdir: ~
+    - name: install apache2
+      apt: name=apache2 update_cache=yes state=latest
+      become: yes
+      become_method: sudo
     - name: install pip3
       apt: 
         name: python3-pip
+        update_cache: yes
       become: yes
       become_method: sudo
     - name: install Flask
@@ -25,10 +25,14 @@
         name: python3-flask
       become: yes
       become_method: sudo
-    - name: start server and save pid
-      shell: "nohup python3 server.py & echo $! > srv_pid.txt"
+    - name: install Gevent
+      shell: pip3 install gevent --user
+    - name: copy conf file
+      copy: src=/home/ubuntu/server/FlaskApp.conf dest=/etc/apache2/sites-available/server.conf remote_src=yes
+    - name: start server
+      command: a2ensite server
       args:
-        chdir: /home/ubuntu/CSE_356_HW1
-      become: yes
-      become_method: sudo
+        creates: /etc/apache2/sites-enabled/server.conf
+    - name: restart apache
+      service: name=apache2 state=restarted
       
