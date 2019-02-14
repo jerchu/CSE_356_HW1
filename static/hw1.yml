@@ -1,0 +1,24 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  tasks:
+    - name: delete old directory
+      file:
+        path: ~/CSE_356_HW1
+        state: absent
+    - name: clone server
+      command: git clone https://github.com/jerchu/CSE_356_HW1.git
+      args:
+        chdir: ~
+    - name: install pip3
+      apt: 
+        name: python3-pip
+      become: yes
+      become_method: sudo
+    - name: install Flask
+      command: pip3 install flask
+    - name: start server
+      command: python3 server.py
+      args:
+        chdir: ~/CSE_356_HW1
+
