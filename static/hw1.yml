@@ -25,11 +25,6 @@
         name: python3-flask
       become: yes
       become_method: sudo
-    - name: install Gunicorn
-      apt:
-        name: gunicorn
-      become: yes
-      become_method: sudo
     - name: start server and save pid
       shell: "nohup python3 server.py & echo $! > srv_pid.txt"
       args:
