@@ -26,7 +26,7 @@
       become: yes
       become_method: sudo
     - name: copy conf file
-      copy: src=/home/ubuntu/server/FlaskApp.conf dest=/etc/apache2/sites-available/server.conf remote_src=yes
+      copy: src=/var/www/server/FlaskApp.conf dest=/etc/apache2/sites-available/server.conf remote_src=yes
       become: yes
       become_method: sudo
     - name: start server
