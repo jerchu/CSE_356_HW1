@@ -11,7 +11,7 @@
       become: yes
       become_method: sudo
     - name: install mod_wsgi
-      apt: name=libapache2-mod-wsgi
+      apt: name=libapache2-mod-wsgi-py3
       become: yes
       become_method: sudo
     - name: install pip3
@@ -30,12 +30,12 @@
       become: yes
       become_method: sudo
     - name: start server
-      command: a2ensite server
+      command: a2ensite server.conf
       args:
         creates: /etc/apache2/sites-enabled/server.conf
       become: yes
       become_method: sudo
-    - command: a2dissite 000-default
+    - command: a2dissite 000-default.conf
       become: yes
       become_method: sudo
     - name: restart apache
