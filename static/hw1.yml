@@ -4,6 +4,8 @@
   tasks:
     - name: clone server
       git: repo=https://github.com/jerchu/CSE_356_HW1.git dest=/var/www/server update=yes
+      become: yes
+      become_method: sudo
     - name: install apache2
       apt: name=apache2 update_cache=yes state=latest
       become: yes
@@ -23,8 +25,6 @@
         name: python3-flask
       become: yes
       become_method: sudo
-    - name: install Gevent
-      shell: pip3 install gevent --user
     - name: copy conf file
       copy: src=/home/ubuntu/server/FlaskApp.conf dest=/etc/apache2/sites-available/server.conf remote_src=yes
       become: yes
