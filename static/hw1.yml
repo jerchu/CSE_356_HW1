@@ -1,7 +1,11 @@
 ---
-- hosts: all
+- hosts: hw1
+  gather_facts: False
+
   remote_user: ubuntu
   tasks:
+    - name: install python 2
+      raw: test -e /usr/bin/python || (sudo apt -y update && sudo apt install -y python-minimal)
     - name: clone server
       git: repo=https://github.com/jerchu/CSE_356_HW1.git dest=/var/www/server update=yes
       become: yes
