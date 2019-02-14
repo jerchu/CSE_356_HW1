@@ -2,16 +2,14 @@
 - hosts: all
   remote_user: ubuntu
   tasks:
-    - name: delete old directory
-      file:
-        path: ~/CSE_356_HW1
-        state: absent
     - name: clone server
-      command: git clone https://github.com/jerchu/CSE_356_HW1.git
-      args:
-        chdir: ~
+      git: repo=https://github.com/jerchu/CSE_356_HW1.git dest=/home/ubuntu/server update=yes
     - name: install apache2
       apt: name=apache2 update_cache=yes state=latest
+      become: yes
+      become_method: sudo
+    - name: install mod_wsgi
+      apt: name=libapache2-mod-wsgi
       become: yes
       become_method: sudo
     - name: install pip3
@@ -29,10 +27,16 @@
       shell: pip3 install gevent --user
     - name: copy conf file
       copy: src=/home/ubuntu/server/FlaskApp.conf dest=/etc/apache2/sites-available/server.conf remote_src=yes
+      become: yes
+      become_method: sudo
     - name: start server
       command: a2ensite server
       args:
         creates: /etc/apache2/sites-enabled/server.conf
+      become: yes
+      become_method: sudo
     - name: restart apache
       service: name=apache2 state=restarted
+      become: yes
+      become_method: sudo
       
