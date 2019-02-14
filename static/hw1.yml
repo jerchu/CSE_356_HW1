@@ -2,6 +2,11 @@
 - hosts: all
   remote_user: ubuntu
   tasks:
+    - name: kill old server
+      shell: "test -e ~/CSE_356_HW1/srv_pid.txt && sudo kill $(cat srv_pid.txt)"
+      ignore_errors: True
+      args:
+        chdir: ~/CSE_356_HW1
     - name: delete old directory
       file:
         path: ~/CSE_356_HW1
@@ -25,10 +30,10 @@
         name: gunicorn
       become: yes
       become_method: sudo
-    - name: start server
-      command: nohup python3 server.py &
+    - name: start server and save pid
+      shell: "nohup python3 server.py & echo $! > srv_pid.txt"
       args:
         chdir: /home/ubuntu/CSE_356_HW1
       become: yes
       become_method: sudo
-
+      
