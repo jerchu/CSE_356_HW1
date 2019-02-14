@@ -35,6 +35,9 @@
         creates: /etc/apache2/sites-enabled/server.conf
       become: yes
       become_method: sudo
+    - command: a2dissite 000-default
+      become: yes
+      become_method: sudo
     - name: restart apache
       service: name=apache2 state=restarted
       become: yes
