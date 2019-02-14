@@ -26,8 +26,8 @@
       become: yes
       become_method: sudo
     - name: start server
-      gunicorn:
-        app: 'server'
+      command: nohup python3 server.py &
+      args:
         chdir: /home/ubuntu/CSE_356_HW1
       become: yes
       become_method: sudo
